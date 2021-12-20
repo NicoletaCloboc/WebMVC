@@ -1,0 +1,48 @@
+﻿@model Upload
+@{
+    ViewData["Title"] = "Create order";
+}
+
+<h1>Create order</h1>
+<br />
+<br />
+
+
+@if (Model == null || string.IsNullOrEmpty(Model.UploadMessage))
+{
+    <label class="accept-policy">Orders are sent into an XML file</label>
+    @using (Html.BeginForm("Upload", "Order", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Order</label>
+            <div class="col-sm-10">
+                <div class="custom-file">
+                    <input asp-for="XML_File" class="form-control custom-file-input">
+                    <label class="custom-file-label">Choose XML file with your order...</label>
+                </div>
+                <br />
+                <input type="submit" value="Upload" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <label class="text-warning">
+        @Model.UploadMessage
+    </label>
+}
+
+
+@*This script is required to display the selected file in the file upload element*@
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
+}
